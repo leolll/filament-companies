@@ -77,9 +77,9 @@ abstract class Company extends Model
      */
     public function removeUser(User $user): void
     {
-        if ($user->current_company_id === $this->id) {
+        if ($user->current_team_id === $this->id) {
             $user->forceFill([
-                'current_company_id' => null,
+                'current_team_id' => null,
             ])->save();
         }
 
@@ -91,11 +91,11 @@ abstract class Company extends Model
      */
     public function purge(): void
     {
-        $this->owner()->where('current_company_id', $this->id)
-                ->update(['current_company_id' => null]);
+        $this->owner()->where('current_team_id', $this->id)
+                ->update(['current_team_id' => null]);
 
-        $this->users()->where('current_company_id', $this->id)
-                ->update(['current_company_id' => null]);
+        $this->users()->where('current_team_id', $this->id)
+                ->update(['current_team_id' => null]);
 
         $this->users()->detach();
 

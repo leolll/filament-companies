@@ -25,11 +25,11 @@ trait HasCompanies
      */
     public function currentCompany(): BelongsTo
     {
-        if (is_null($this->current_company_id) && $this->id) {
+        if (is_null($this->current_team_id) && $this->id) {
             $this->switchCompany($this->personalCompany());
         }
 
-        return $this->belongsTo(FilamentCompanies::companyModel(), 'current_company_id');
+        return $this->belongsTo(FilamentCompanies::companyModel(), 'current_team_id');
     }
 
     /**
@@ -42,7 +42,7 @@ trait HasCompanies
         }
 
         $this->forceFill([
-            'current_company_id' => $company->id,
+            'current_team_id' => $company->id,
         ])->save();
 
         $this->setRelation('currentCompany', $company);
