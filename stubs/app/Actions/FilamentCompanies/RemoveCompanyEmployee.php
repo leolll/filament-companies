@@ -2,7 +2,7 @@
 
 namespace App\Actions\FilamentCompanies;
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
@@ -17,7 +17,7 @@ class RemoveCompanyEmployee implements RemovesCompanyEmployees
      *
      * @throws AuthorizationException
      */
-    public function remove(User $user, Company $company, User $companyEmployee): void
+    public function remove(User $user, Team $team, User $companyEmployee): void
     {
         $this->authorize($user, $company, $companyEmployee);
 
@@ -33,7 +33,7 @@ class RemoveCompanyEmployee implements RemovesCompanyEmployees
      *
      * @throws AuthorizationException
      */
-    protected function authorize(User $user, Company $company, User $companyEmployee): void
+    protected function authorize(User $user, Team $team, User $companyEmployee): void
     {
         if (! Gate::forUser($user)->check('removeCompanyEmployee', $company) &&
             $user->id !== $companyEmployee->id) {
@@ -44,7 +44,7 @@ class RemoveCompanyEmployee implements RemovesCompanyEmployees
     /**
      * Ensure that the currently authenticated user does not own the company.
      */
-    protected function ensureUserDoesNotOwnCompany(User $companyEmployee, Company $company): void
+    protected function ensureUserDoesNotOwnCompany(User $companyEmployee, Team $team): void
     {
         if ($companyEmployee->id === $company->owner->id) {
             throw ValidationException::withMessages([

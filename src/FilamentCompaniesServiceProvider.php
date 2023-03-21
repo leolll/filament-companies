@@ -9,19 +9,19 @@ use Illuminate\View\Compilers\BladeCompiler;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
 use Wallo\FilamentCompanies\Http\Livewire\ApiTokenManager;
-use Wallo\FilamentCompanies\Http\Livewire\CompanyEmployeeManager;
+use Wallo\FilamentCompanies\Http\Livewire\TeamMemberManager;
 use Wallo\FilamentCompanies\Http\Livewire\ConnectedAccountsForm;
-use Wallo\FilamentCompanies\Http\Livewire\CreateCompanyForm;
-use Wallo\FilamentCompanies\Http\Livewire\DeleteCompanyForm;
+use Wallo\FilamentCompanies\Http\Livewire\CreateTeamForm;
+use Wallo\FilamentCompanies\Http\Livewire\DeleteTeamForm;
 use Wallo\FilamentCompanies\Http\Livewire\DeleteUserForm;
 use Wallo\FilamentCompanies\Http\Livewire\LogoutOtherBrowserSessionsForm;
 use Wallo\FilamentCompanies\Http\Livewire\SetPasswordForm;
 use Wallo\FilamentCompanies\Http\Livewire\TwoFactorAuthenticationForm;
-use Wallo\FilamentCompanies\Http\Livewire\UpdateCompanyNameForm;
+use Wallo\FilamentCompanies\Http\Livewire\UpdateTeamNameForm;
 use Wallo\FilamentCompanies\Http\Livewire\UpdatePasswordForm;
 use Wallo\FilamentCompanies\Http\Livewire\UpdateProfileInformationForm;
-use Wallo\FilamentCompanies\Pages\Companies\CompanySettings;
-use Wallo\FilamentCompanies\Pages\Companies\CreateCompany;
+use Wallo\FilamentCompanies\Pages\Teams\TeamSettings;
+use Wallo\FilamentCompanies\Pages\Teams\CreateTeam;
 use Wallo\FilamentCompanies\Pages\User\APITokens;
 use Wallo\FilamentCompanies\Pages\User\Profile;
 
@@ -54,11 +54,11 @@ class FilamentCompaniesServiceProvider extends ServiceProvider
                     Livewire::component(ApiTokenManager::getName(), ApiTokenManager::class);
                 }
 
-                if (Features::hasCompanyFeatures()) {
-                    Livewire::component(CreateCompanyForm::getName(), CreateCompanyForm::class);
-                    Livewire::component(UpdateCompanyNameForm::getName(), UpdateCompanyNameForm::class);
-                    Livewire::component(CompanyEmployeeManager::getName(), CompanyEmployeeManager::class);
-                    Livewire::component(DeleteCompanyForm::getName(), DeleteCompanyForm::class);
+                if (Features::hasTeamFeatures()) {
+                    Livewire::component(CreateTeamForm::getName(), CreateTeamForm::class);
+                    Livewire::component(UpdateTeamNameForm::getName(), UpdateTeamNameForm::class);
+                    Livewire::component(TeamMemberManager::getName(), TeamMemberManager::class);
+                    Livewire::component(DeleteTeamForm::getName(), DeleteTeamForm::class);
                 }
             }
         });
@@ -149,8 +149,8 @@ class FilamentCompaniesServiceProvider extends ServiceProvider
         return [
             Profile::class,
             APITokens::class,
-            CompanySettings::class,
-            CreateCompany::class,
+            TeamSettings::class,
+            CreateTeam::class,
         ];
     }
 }

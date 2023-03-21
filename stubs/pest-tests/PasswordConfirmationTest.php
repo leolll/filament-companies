@@ -4,7 +4,7 @@ use App\Models\User;
 use Wallo\FilamentCompanies\Features;
 
 test('confirm password screen can be rendered', function () {
-    $user = Features::hasCompanyFeatures()
+    $user = Features::hasTeamFeatures()
                     ? User::factory()->withPersonalCompany()->create()
                     : User::factory()->create();
 

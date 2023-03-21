@@ -37,15 +37,15 @@ class CompanyBehaviorTest extends OrchestraTestCase
 
         $this->assertInstanceOf(Company::class, $company);
 
-        $this->assertTrue($user->belongsToCompany($company));
-        $this->assertTrue($user->ownsCompany($company));
+        $this->assertTrue($user->belongsTeam($company));
+        $this->assertTrue($user->ownsTeam($company));
         $this->assertCount(1, $user->fresh()->ownedCompanies);
-        $this->assertCount(1, $user->fresh()->allCompanies());
+        $this->assertCount(1, $user->fresh()->allTeams());
 
-        $company->forceFill(['personal_company' => true])->save();
+        $company->forceFill(['personal_team' => true])->save();
 
-        $this->assertEquals($company->id, $user->fresh()->personalCompany()->id);
-        $this->assertEquals($company->id, $user->fresh()->currentCompany->id);
+        $this->assertEquals($company->id, $user->fresh()->personalTeam()->id);
+        $this->assertEquals($company->id, $user->fresh()->currentTeam->id);
         $this->assertTrue($user->hasCompanyPermission($company, 'foo'));
 
         // Test with another user that isn't on the company...
@@ -55,8 +55,8 @@ class CompanyBehaviorTest extends OrchestraTestCase
             'password' => 'secret',
         ]);
 
-        $this->assertFalse($otherUser->belongsToCompany($company));
-        $this->assertFalse($otherUser->ownsCompany($company));
+        $this->assertFalse($otherUser->belongsTeam($company));
+        $this->assertFalse($otherUser->ownsTeam($company));
         $this->assertFalse($otherUser->hasCompanyPermission($company, 'foo'));
 
         // Add the other user to the company...
@@ -65,8 +65,8 @@ class CompanyBehaviorTest extends OrchestraTestCase
         $otherUser->companies()->attach($company, ['role' => 'editor']);
         $otherUser = $otherUser->fresh();
 
-        $this->assertTrue($otherUser->belongsToCompany($company));
-        $this->assertFalse($otherUser->ownsCompany($company));
+        $this->assertTrue($otherUser->belongsTeam($company));
+        $this->assertFalse($otherUser->ownsTeam($company));
 
         $this->assertTrue($otherUser->hasCompanyPermission($company, 'foo'));
         $this->assertFalse($otherUser->hasCompanyPermission($company, 'bar'));
@@ -76,8 +76,8 @@ class CompanyBehaviorTest extends OrchestraTestCase
 
         $otherUser->withAccessToken(new TransientToken);
 
-        $this->assertTrue($otherUser->belongsToCompany($company));
-        $this->assertFalse($otherUser->ownsCompany($company));
+        $this->assertTrue($otherUser->belongsTeam($company));
+        $this->assertFalse($otherUser->ownsTeam($company));
 
         $this->assertTrue($otherUser->hasCompanyPermission($company, 'foo'));
         $this->assertFalse($otherUser->hasCompanyPermission($company, 'bar'));
@@ -143,13 +143,13 @@ class CompanyBehaviorTest extends OrchestraTestCase
 
         $personalCompany = $action->create($user, ['name' => 'Personal Company']);
 
-        $personalCompany->forceFill(['personal_company' => true])->save();
+        $personalCompany->forceFill(['personal_team' => true])->save();
 
-        $this->assertTrue($user->isCurrentCompany($personalCompany));
+        $this->assertTrue($user->isCurrentTeam($personalCompany));
 
         $anotherCompany = $action->create($user, ['name' => 'Test Company']);
 
-        $this->assertTrue($user->isCurrentCompany($anotherCompany));
+        $this->assertTrue($user->isCurrentTeam($anotherCompany));
     }
 
     protected function migrate()

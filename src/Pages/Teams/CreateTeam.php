@@ -1,18 +1,18 @@
 <?php
 
-namespace Wallo\FilamentCompanies\Pages\Companies;
+namespace Wallo\FilamentCompanies\Pages\Teams;
 
-use App\Models\Company;
 use Filament\Pages\Page;
+use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Wallo\FilamentCompanies\FilamentCompanies;
 
-class CreateCompany extends Page
+class CreateTeam extends Page
 {
-    public Company $company;
+    public Team $company;
 
-    protected static string $view = 'filament-companies::filament.pages.companies.create_company';
+    protected static string $view = 'filament-companies::filament.pages.teams.create_team';
 
     protected static bool $shouldRegisterNavigation = false;
 
@@ -21,15 +21,15 @@ class CreateCompany extends Page
         return __('filament-companies::default.pages.titles.create_company');
     }
 
-    public function mount(Company $company): void
+    public function mount(Team $company): void
     {
-        abort_unless(FilamentCompanies::hasCompanyFeatures(), 403);
+        abort_unless(FilamentCompanies::hasTeamFeatures(), 403);
         Gate::authorize('create', FilamentCompanies::newCompanyModel());
-        $this->company = Auth::user()->currentCompany;
+        $this->company = Auth::user()->currentTeam;
     }
 
     public static function getSlug(): string
     {
-        return 'companies/create';
+        return 'teams/create';
     }
 }

@@ -1,22 +1,22 @@
 <?php
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\User;
 use Livewire\Livewire;
-use Wallo\FilamentCompanies\Http\Livewire\DeleteCompanyForm;
+use Wallo\FilamentCompanies\Http\Livewire\DeleteTeamForm;
 
 test('companies can be deleted', function () {
     $this->actingAs($user = User::factory()->withPersonalCompany()->create());
 
     $user->ownedCompanies()->save($company = Company::factory()->make([
-        'personal_company' => false,
+        'personal_team' => false,
     ]));
 
     $company->users()->attach(
         $otherUser = User::factory()->create(), ['role' => 'test-role']
     );
 
-    $component = Livewire::test(DeleteCompanyForm::class, ['company' => $company->fresh()])
+    $component = Livewire::test(DeleteTeamForm::class, ['company' => $company->fresh()])
                             ->call('deleteCompany');
 
     expect($company->fresh())->toBeNull();
@@ -26,9 +26,9 @@ test('companies can be deleted', function () {
 test('personal companies cant be deleted', function () {
     $this->actingAs($user = User::factory()->withPersonalCompany()->create());
 
-    $component = Livewire::test(DeleteCompanyForm::class, ['company' => $user->currentCompany])
+    $component = Livewire::test(DeleteTeamForm::class, ['company' => $user->currentTeam])
                             ->call('deleteCompany')
                             ->assertHasErrors(['company']);
 
-    expect($user->currentCompany->fresh())->not->toBeNull();
+    expect($user->currentTeam->fresh())->not->toBeNull();
 });

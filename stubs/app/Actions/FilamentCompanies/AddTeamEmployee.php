@@ -2,7 +2,7 @@
 
 namespace App\Actions\FilamentCompanies;
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\User;
 use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -15,16 +15,16 @@ use Wallo\FilamentCompanies\Events\CompanyEmployeeAdded;
 use Wallo\FilamentCompanies\FilamentCompanies;
 use Wallo\FilamentCompanies\Rules\Role;
 
-class AddCompanyEmployee implements AddsCompanyEmployees
+class AddTeamEmployee implements AddsCompanyEmployees
 {
     /**
      * Add a new company employee to the given company.
      *
      * @throws AuthorizationException
      */
-    public function add(User $user, Company $company, string $email, string $role = null): void
+    public function add(User $user, Team $team, string $email, string $role = null): void
     {
-        Gate::forUser($user)->authorize('addCompanyEmployee', $company);
+        Gate::forUser($user)->authorize('addTeamMember', $company);
 
         $this->validate($company, $email, $role);
 
@@ -42,7 +42,7 @@ class AddCompanyEmployee implements AddsCompanyEmployees
     /**
      * Validate the add employee operation.
      */
-    protected function validate(Company $company, string $email, ?string $role): void
+    protected function validate(Team $team, string $email, ?string $role): void
     {
         Validator::make([
             'email' => $email,
@@ -51,7 +51,7 @@ class AddCompanyEmployee implements AddsCompanyEmployees
             'email.exists' => __('filament-companies::default.errors.email_not_found'),
         ])->after(
             $this->ensureUserIsNotAlreadyOnCompany($company, $email)
-        )->validateWithBag('addCompanyEmployee');
+        )->validateWithBag('addTeamMember');
     }
 
     /**
@@ -72,7 +72,7 @@ class AddCompanyEmployee implements AddsCompanyEmployees
     /**
      * Ensure that the user is not already on the company.
      */
-    protected function ensureUserIsNotAlreadyOnCompany(Company $company, string $email): Closure
+    protected function ensureUserIsNotAlreadyOnCompany(Team $team, string $email): Closure
     {
         return static function ($validator) use ($company, $email) {
             $validator->errors()->addIf(

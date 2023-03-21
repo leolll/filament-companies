@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CompanyPolicy
+class TeamPolicy
 {
     use HandlesAuthorization;
 
@@ -21,9 +21,9 @@ class CompanyPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Company $company): bool
+    public function view(User $user, Team $company): bool
     {
-        return $user->belongsToCompany($company);
+        return $user->belongsTeam($company);
     }
 
     /**
@@ -37,40 +37,40 @@ class CompanyPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Company $company): bool
+    public function update(User $user, Team $team): bool
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 
     /**
      * Determine whether the user can add company employees.
      */
-    public function addCompanyEmployee(User $user, Company $company): bool
+    public function addTeamMember(User $user, Team $team): bool
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 
     /**
      * Determine whether the user can update company employee permissions.
      */
-    public function updateCompanyEmployee(User $user, Company $company): bool
+    public function updateTeamMember(User $user, Team $team): bool
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 
     /**
      * Determine whether the user can remove company employees.
      */
-    public function removeCompanyEmployee(User $user, Company $company): bool
+    public function removeCompanyEmployee(User $user, Team $team): bool
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Company $company): bool
+    public function delete(User $user, Team $team): bool
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 }

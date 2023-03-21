@@ -4,7 +4,7 @@ namespace Wallo\FilamentCompanies\Tests;
 
 use App\Actions\FilamentCompanies\CreateCompany;
 use App\Actions\FilamentCompanies\DeleteCompany;
-use App\Models\Company;
+use App\Models\Team;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -51,7 +51,7 @@ class DeleteCompanyTest extends OrchestraTestCase
         $this->assertTrue(true);
     }
 
-    public function test_personal_company_cant_be_deleted()
+    public function test_personal_team_cant_be_deleted()
     {
         $this->expectException(ValidationException::class);
 
@@ -61,7 +61,7 @@ class DeleteCompanyTest extends OrchestraTestCase
 
         $company = $this->createCompany();
 
-        $company->forceFill(['personal_company' => true])->save();
+        $company->forceFill(['personal_team' => true])->save();
 
         $action = new ValidateCompanyDeletion;
 

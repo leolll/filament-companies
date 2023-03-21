@@ -21,7 +21,7 @@ return new class extends Migration
                 Socialite::hasSocialiteFeatures()
             );
             $table->rememberToken();
-            $table->foreignId('current_company_id')->nullable();
+            $table->foreignId('current_team_id')->nullable();
             $table->foreignId('current_connected_account_id')->nullable();
             $table->string('profile_photo_path')->nullable();
             $table->timestamps();

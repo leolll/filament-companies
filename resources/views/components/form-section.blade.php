@@ -1,4 +1,5 @@
-@props(['title', 'description'])
+@props(['submit'])
+
 <div {{ $attributes->class(['grid grid-cols-1 md:grid-cols-3 gap-6']) }}>
 
     <div class="col-span-1 flex justify-between">
@@ -16,13 +17,20 @@
             </p>
         </div>
     </div>
-    <div class="col-span-1 md:col-span-2">
-        {{ $slot }}
-        @if (isset($actions))
-            <div class="flex items-center justify-start gap-4 py-3 text-left">
-                {{ $actions }}
-            </div>
-        @endif
-    </div>
 
+    <div class="mt-5 md:mt-0 md:col-span-2">
+        <form wire:submit.prevent="{{ $submit }}">
+            <x-filament::card>
+                <div>
+                    {{ $form }}
+                </div>
+            </x-filament::card>
+
+            @if (isset($actions))
+                <div class="flex items-center justify-start gap-4 py-3 text-left">
+                    {{ $actions }}
+                </div>
+            @endif
+        </form>
+    </div>
 </div>

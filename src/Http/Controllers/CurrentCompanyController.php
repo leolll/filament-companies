@@ -17,7 +17,7 @@ class CurrentCompanyController extends Controller
     {
         $company = FilamentCompanies::newCompanyModel()->findOrFail($request->company_id);
 
-        if (! $request->user()->switchCompany($company)) {
+        if (! $request->user()->switchTeam($company)) {
             abort(403);
         }
 

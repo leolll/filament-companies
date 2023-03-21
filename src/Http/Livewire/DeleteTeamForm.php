@@ -14,7 +14,7 @@ use Wallo\FilamentCompanies\Actions\ValidateCompanyDeletion;
 use Wallo\FilamentCompanies\Contracts\DeletesCompanies;
 use Wallo\FilamentCompanies\RedirectsActions;
 
-class DeleteCompanyForm extends Component
+class DeleteTeamForm extends Component
 {
     use RedirectsActions;
 
@@ -59,7 +59,7 @@ class DeleteCompanyForm extends Component
      */
     public function render(): View
     {
-        return view('filament-companies::companies.delete-company-form');
+        return view('filament-companies::teams.delete-team-form');
     }
 
     public function companyDeleted($name)

@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
-use Wallo\FilamentCompanies\Http\Livewire\CompanyEmployeeManager;
+use Wallo\FilamentCompanies\Http\Livewire\TeamMemberManager;
 
 class UpdateCompanyEmployeeRoleTest extends TestCase
 {
@@ -16,17 +16,17 @@ class UpdateCompanyEmployeeRoleTest extends TestCase
     {
         $this->actingAs($user = User::factory()->withPersonalCompany()->create());
 
-        $user->currentCompany->users()->attach(
+        $user->currentTeam->users()->attach(
             $otherUser = User::factory()->create(), ['role' => 'admin']
         );
 
-        $component = Livewire::test(CompanyEmployeeManager::class, ['company' => $user->currentCompany])
+        $component = Livewire::test(TeamMemberManager::class, ['company' => $user->currentTeam])
                         ->set('managingRoleFor', $otherUser)
                         ->set('currentRole', 'editor')
                         ->call('updateRole');
 
         $this->assertTrue($otherUser->fresh()->hasCompanyRole(
-            $user->currentCompany->fresh(), 'editor'
+            $user->currentTeam->fresh(), 'editor'
         ));
     }
 
@@ -34,20 +34,20 @@ class UpdateCompanyEmployeeRoleTest extends TestCase
     {
         $user = User::factory()->withPersonalCompany()->create();
 
-        $user->currentCompany->users()->attach(
+        $user->currentTeam->users()->attach(
             $otherUser = User::factory()->create(), ['role' => 'admin']
         );
 
         $this->actingAs($otherUser);
 
-        $component = Livewire::test(CompanyEmployeeManager::class, ['company' => $user->currentCompany])
+        $component = Livewire::test(TeamMemberManager::class, ['company' => $user->currentTeam])
                         ->set('managingRoleFor', $otherUser)
                         ->set('currentRole', 'editor')
                         ->call('updateRole')
                         ->assertStatus(403);
 
         $this->assertTrue($otherUser->fresh()->hasCompanyRole(
-            $user->currentCompany->fresh(), 'admin'
+            $user->currentTeam->fresh(), 'admin'
         ));
     }
 }

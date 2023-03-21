@@ -52,7 +52,7 @@ class FilamentCompaniesTest extends OrchestraTestCase
 
     public function test_has_company_feature_will_always_return_false_when_company_is_not_enabled()
     {
-        $this->assertFalse(FilamentCompanies::hasCompanyFeatures());
+        $this->assertFalse(FilamentCompanies::hasTeamFeatures());
         $this->assertFalse(FilamentCompanies::userHasCompanyFeatures(new Fixtures\User));
         $this->assertFalse(FilamentCompanies::userHasCompanyFeatures(new Fixtures\Admin));
     }
@@ -62,7 +62,7 @@ class FilamentCompaniesTest extends OrchestraTestCase
      */
     public function test_has_company_feature_can_be_determined_when_company_is_enabled()
     {
-        $this->assertTrue(FilamentCompanies::hasCompanyFeatures());
+        $this->assertTrue(FilamentCompanies::hasTeamFeatures());
         $this->assertTrue(FilamentCompanies::userHasCompanyFeatures(new Fixtures\User));
         $this->assertFalse(FilamentCompanies::userHasCompanyFeatures(new Fixtures\Admin));
     }

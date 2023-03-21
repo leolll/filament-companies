@@ -40,7 +40,7 @@ class Features
     /**
      * Determine if the application is using any company features.
      */
-    public static function hasCompanyFeatures(): bool
+    public static function hasTeamFeatures(): bool
     {
         return static::enabled(static::companies());
     }

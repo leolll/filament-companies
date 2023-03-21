@@ -6,7 +6,7 @@ use Wallo\FilamentCompanies\Features;
 use Wallo\FilamentCompanies\Http\Livewire\ApiTokenManager;
 
 test('api tokens can be created', function () {
-    if (Features::hasCompanyFeatures()) {
+    if (Features::hasTeamFeatures()) {
         $this->actingAs($user = User::factory()->withPersonalCompany()->create());
     } else {
         $this->actingAs($user = User::factory()->create());

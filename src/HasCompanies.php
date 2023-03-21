@@ -2,7 +2,7 @@
 
 namespace Wallo\FilamentCompanies;
 
-use App\Models\Company;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,18 +15,18 @@ trait HasCompanies
     /**
      * Determine if the given company is the current company.
      */
-    public function isCurrentCompany(mixed $company): bool
+    public function isCurrentTeam(mixed $company): bool
     {
-        return $company->id === $this->currentCompany->id;
+        return $company->id === $this->currentTeam->id;
     }
 
     /**
      * Get the current company of the user's filament-companies.
      */
-    public function currentCompany(): BelongsTo
+    public function currentTeam(): BelongsTo
     {
         if (is_null($this->current_team_id) && $this->id) {
-            $this->switchCompany($this->personalCompany());
+            $this->switchTeam($this->personalTeam());
         }
 
         return $this->belongsTo(FilamentCompanies::companyModel(), 'current_team_id');
@@ -37,7 +37,7 @@ trait HasCompanies
      */
     public function switchCompany(mixed $company): bool
     {
-        if (! $this->belongsToCompany($company)) {
+        if (! $this->belongsTeam($company)) {
             return false;
         }
 
@@ -45,7 +45,7 @@ trait HasCompanies
             'current_team_id' => $company->id,
         ])->save();
 
-        $this->setRelation('currentCompany', $company);
+        $this->setRelation('currentTeam', $company);
 
         return true;
     }
@@ -74,21 +74,21 @@ trait HasCompanies
         return $this->belongsToMany(FilamentCompanies::companyModel(), FilamentCompanies::employeeshipModel())
                         ->withPivot('role')
                         ->withTimestamps()
-                        ->as('employeeship');
+                        ->as('membership');
     }
 
     /**
      * Get the user's "personal" company.
      */
-    public function personalCompany(): Company
+    public function personalTeam(): Company
     {
-        return $this->ownedCompanies->where('personal_company', true)->first();
+        return $this->ownedCompanies->where('personal_team', true)->first();
     }
 
     /**
      * Determine if the user owns the given company.
      */
-    public function ownsCompany(mixed $company): bool
+    public function ownsTeam(mixed $company): bool
     {
         if (is_null($company)) {
             return false;
@@ -100,13 +100,13 @@ trait HasCompanies
     /**
      * Determine if the user belongs to the given company.
      */
-    public function belongsToCompany(mixed $company): bool
+    public function belongsTeam(mixed $company): bool
     {
         if (is_null($company)) {
             return false;
         }
 
-        return $this->ownsCompany($company) || $this->companies->contains(function ($t) use ($company) {
+        return $this->ownsTeam($company) || $this->companies->contains(function ($t) use ($company) {
             return $t->id === $company->id;
         });
     }
@@ -116,11 +116,11 @@ trait HasCompanies
      */
     public function companyRole(mixed $company): Role|null
     {
-        if ($this->ownsCompany($company)) {
+        if ($this->ownsTeam($company)) {
             return new OwnerRole;
         }
 
-        if (! $this->belongsToCompany($company)) {
+        if (! $this->belongsTeam($company)) {
             return null;
         }
 
@@ -138,11 +138,11 @@ trait HasCompanies
      */
     public function hasCompanyRole(mixed $company, string $role): bool
     {
-        if ($this->ownsCompany($company)) {
+        if ($this->ownsTeam($company)) {
             return true;
         }
 
-        return $this->belongsToCompany($company) && optional(FilamentCompanies::findRole($company->users->where(
+        return $this->belongsTeam($company) && optional(FilamentCompanies::findRole($company->users->where(
             'id', $this->id
         )->first()->employeeship->role))->key === $role;
     }
@@ -152,11 +152,11 @@ trait HasCompanies
      */
     public function companyPermissions(mixed $company): array
     {
-        if ($this->ownsCompany($company)) {
+        if ($this->ownsTeam($company)) {
             return ['*'];
         }
 
-        if (! $this->belongsToCompany($company)) {
+        if (! $this->belongsTeam($company)) {
             return [];
         }
 
@@ -168,11 +168,11 @@ trait HasCompanies
      */
     public function hasCompanyPermission(mixed $company, string $permission): bool
     {
-        if ($this->ownsCompany($company)) {
+        if ($this->ownsTeam($company)) {
             return true;
         }
 
-        if (! $this->belongsToCompany($company)) {
+        if (! $this->belongsTeam($company)) {
             return false;
         }
 

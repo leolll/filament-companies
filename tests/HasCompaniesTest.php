@@ -2,7 +2,7 @@
 
 namespace Wallo\FilamentCompanies\Tests;
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Wallo\FilamentCompanies\FilamentCompanies;

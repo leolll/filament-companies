@@ -2,7 +2,6 @@
 
 namespace App\Actions\FilamentCompanies;
 
-use App\Models\Company;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Contracts\User as ProviderUserContract;
@@ -57,10 +56,10 @@ class CreateUserFromProvider implements CreatesUserFromProvider
      */
     protected function createCompany(User $user): void
     {
-        $user->ownedCompanies()->save(Company::forceCreate([
+        $user->ownedCompanies()->save(Team::forceCreate([
             'user_id' => $user->id,
             'name' => explode(' ', $user->name, 2)[0]."'s Company",
-            'personal_company' => true,
+            'personal_team' => true,
         ]));
     }
 }

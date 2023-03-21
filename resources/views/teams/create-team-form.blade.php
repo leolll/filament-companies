@@ -1,4 +1,4 @@
-<x-filament-companies::grid-section class="mt-8">
+<x-filament-companies::grid-section>
     <x-slot name="title">
         {{ __('filament-companies::default.grid_section_titles.create_company') }}
     </x-slot>
@@ -7,14 +7,14 @@
         {{ __('filament-companies::default.grid_section_descriptions.create_company') }}
     </x-slot>
 
-    <form wire:submit.prevent="createCompany" class="col-span-2 mt-5 sm:col-span-1 md:mt-0">
+    <form wire:submit.prevent="createCompany" class="col-span-1 mt-5 md:col-span-2">
         <x-filament::card>
             <div class="col-span-6 sm:col-span-4">
-                <x-filament-companies::label value="{{ __('filament-companies::default.labels.company_owner') }}"/>
+                <x-filament-companies::label value="{{ __('filament-companies::default.labels.company_owner') }}" />
 
                 <div class="mt-4 flex items-center">
                     <img class="h-12 w-12 rounded-full object-cover" src="{{ $this->user->profile_photo_url }}"
-                         alt="{{ $this->user->name }}">
+                        alt="{{ $this->user->name }}">
 
                     <div class="ml-4 leading-tight">
                         <div class="dark:text-white">{{ $this->user->name }}</div>
@@ -25,8 +25,9 @@
 
             <div class="col-span-6 sm:col-span-4">
                 <x-forms::field-wrapper id="name" statePath="name" required="true"
-                                        label="{{ __('filament-companies::default.labels.company_name') }}">
-                    <x-filament-companies::input id="name" type="text" wire:model.defer="state.name" autofocus="on"/>
+                    label="{{ __('filament-companies::default.labels.company_name') }}">
+                    <x-filament-companies::input id="name" type="text" wire:model.defer="state.name"
+                        autofocus="on" />
                 </x-forms::field-wrapper>
             </div>
 

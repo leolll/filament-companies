@@ -4,7 +4,7 @@ namespace Wallo\FilamentCompanies\Tests;
 
 use App\Actions\FilamentCompanies\AddCompanyEmployee;
 use App\Actions\FilamentCompanies\CreateCompany;
-use App\Models\Company;
+use App\Models\Team;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\TransientToken;

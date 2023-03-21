@@ -3,7 +3,7 @@
 namespace Wallo\FilamentCompanies\Tests;
 
 use App\Actions\FilamentCompanies\CreateCompany;
-use App\Models\Company;
+use App\Models\Team;
 use Illuminate\Support\Facades\Gate;
 use Wallo\FilamentCompanies\FilamentCompanies;
 use Wallo\FilamentCompanies\Tests\Fixtures\CompanyPolicy;
@@ -37,8 +37,8 @@ class CurrentCompanyControllerTest extends OrchestraTestCase
 
         $response->assertRedirect();
 
-        $this->assertEquals($company->id, $user->fresh()->currentCompany->id);
-        $this->assertTrue($user->isCurrentCompany($company));
+        $this->assertEquals($company->id, $user->fresh()->currentTeam->id);
+        $this->assertTrue($user->isCurrentTeam($company));
     }
 
     public function test_cant_switch_to_company_the_user_does_not_belong_to()

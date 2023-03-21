@@ -4,7 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Wallo\FilamentCompanies\Features;
-use Wallo\FilamentCompanies\Http\Livewire\CompanyEmployeeManager;
+use Wallo\FilamentCompanies\Http\Livewire\TeamMemberManager;
 use Wallo\FilamentCompanies\Mail\CompanyInvitation;
 
 test('company employees can be invited to company', function () {
@@ -12,15 +12,15 @@ test('company employees can be invited to company', function () {
 
     $this->actingAs($user = User::factory()->withPersonalCompany()->create());
 
-    $component = Livewire::test(CompanyEmployeeManager::class, ['company' => $user->currentCompany])
-                    ->set('addCompanyEmployeeForm', [
+    $component = Livewire::test(TeamMemberManager::class, ['company' => $user->currentTeam])
+                    ->set('addTeamMemberForm', [
                         'email' => 'test@example.com',
                         'role' => 'admin',
-                    ])->call('addCompanyEmployee');
+                    ])->call('addTeamMember');
 
     Mail::assertSent(CompanyInvitation::class);
 
-    expect($user->currentCompany->fresh()->companyInvitations)->toHaveCount(1);
+    expect($user->currentTeam->fresh()->companyInvitations)->toHaveCount(1);
 })->skip(function () {
     return ! Features::sendsCompanyInvitations();
 }, 'Company invitations not enabled.');
@@ -31,18 +31,18 @@ test('company employee invitations can be cancelled', function () {
     $this->actingAs($user = User::factory()->withPersonalCompany()->create());
 
     // Add the company employee...
-    $component = Livewire::test(CompanyEmployeeManager::class, ['company' => $user->currentCompany])
-                    ->set('addCompanyEmployeeForm', [
+    $component = Livewire::test(TeamMemberManager::class, ['company' => $user->currentTeam])
+                    ->set('addTeamMemberForm', [
                         'email' => 'test@example.com',
                         'role' => 'admin',
-                    ])->call('addCompanyEmployee');
+                    ])->call('addTeamMember');
 
-    $invitationId = $user->currentCompany->fresh()->companyInvitations->first()->id;
+    $invitationId = $user->currentTeam->fresh()->companyInvitations->first()->id;
 
     // Cancel the company invitation...
     $component->call('cancelCompanyInvitation', $invitationId);
 
-    expect($user->currentCompany->fresh()->companyInvitations)->toHaveCount(0);
+    expect($user->currentTeam->fresh()->companyInvitations)->toHaveCount(0);
 })->skip(function () {
     return ! Features::sendsCompanyInvitations();
 }, 'Company invitations not enabled.');

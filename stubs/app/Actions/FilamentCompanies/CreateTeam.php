@@ -2,16 +2,16 @@
 
 namespace App\Actions\FilamentCompanies;
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\User;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
-use Wallo\FilamentCompanies\Contracts\CreatesCompanies;
-use Wallo\FilamentCompanies\Events\AddingCompany;
 use Wallo\FilamentCompanies\FilamentCompanies;
+use Wallo\FilamentCompanies\Events\AddingCompany;
+use Illuminate\Auth\Access\AuthorizationException;
+use Wallo\FilamentCompanies\Contracts\CreatesTeams;
 
-class CreateCompany implements CreatesCompanies
+class CreateTeam implements CreatesTeams
 {
     /**
      * Validate and create a new company for the given user.
@@ -20,7 +20,7 @@ class CreateCompany implements CreatesCompanies
      *
      * @throws AuthorizationException
      */
-    public function create(User $user, array $input): Company
+    public function create(User $user, array $input): Team
     {
         Gate::forUser($user)->authorize('create', FilamentCompanies::newCompanyModel());
 
@@ -30,11 +30,11 @@ class CreateCompany implements CreatesCompanies
 
         AddingCompany::dispatch($user);
 
-        $user->switchCompany($company = $user->ownedCompanies()->create([
+        $user->switchTeam($team = $user->ownedTeams()->create([
             'name' => $input['name'],
-            'personal_company' => false,
+            'personal_team' => false,
         ]));
 
-        return $company;
+        return $team;
     }
 }

@@ -42,7 +42,7 @@ class FilamentCompaniesServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (FilamentCompanies::hasCompanyFeatures()) {
+        if (FilamentCompanies::hasTeamFeatures()) {
             Filament::registerRenderHook(
                 'global-search.start',
                 static fn (): View => view('filament-companies::components.dropdown.navigation-menu'),
@@ -94,9 +94,9 @@ class FilamentCompaniesServiceProvider extends ServiceProvider
 
         $this->configurePermissions();
 
-        FilamentCompanies::createCompaniesUsing(CreateCompany::class);
+        FilamentCompanies::createTeamsUsing(CreateCompany::class);
         FilamentCompanies::updateCompanyNamesUsing(UpdateCompanyName::class);
-        FilamentCompanies::addCompanyEmployeesUsing(AddCompanyEmployee::class);
+        FilamentCompanies::addTeamMembersUsing(AddCompanyEmployee::class);
         FilamentCompanies::inviteCompanyEmployeesUsing(InviteCompanyEmployee::class);
         FilamentCompanies::removeCompanyEmployeesUsing(RemoveCompanyEmployee::class);
         FilamentCompanies::deleteCompaniesUsing(DeleteCompany::class);

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\ConnectedAccount;
 use App\Policies\CompanyPolicy;
 use App\Policies\ConnectedAccountPolicy;

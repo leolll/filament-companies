@@ -9,7 +9,7 @@ use Wallo\FilamentCompanies\Events\CompanyEmployeeUpdated;
 use Wallo\FilamentCompanies\FilamentCompanies;
 use Wallo\FilamentCompanies\Rules\Role;
 
-class UpdateCompanyEmployeeRole
+class UpdateTeamMemberRole
 {
     /**
      * Update the role for the given company employee.
@@ -18,7 +18,7 @@ class UpdateCompanyEmployeeRole
      */
     public function update(mixed $user, mixed $company, int $companyEmployeeId, string $role): void
     {
-        Gate::forUser($user)->authorize('updateCompanyEmployee', $company);
+        Gate::forUser($user)->authorize('updateTeamMember', $company);
 
         Validator::make([
             'role' => $role,

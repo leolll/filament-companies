@@ -8,9 +8,9 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use Wallo\FilamentCompanies\Contracts\UpdatesCompanyNames;
+use Wallo\FilamentCompanies\Contracts\UpdatesTeamNames;
 
-class UpdateCompanyNameForm extends Component
+class UpdateTeamNameForm extends Component
 {
     /**
      * The company instance.
@@ -35,7 +35,7 @@ class UpdateCompanyNameForm extends Component
     /**
      * Update the company's name.
      */
-    public function updateCompanyName(UpdatesCompanyNames $updater): void
+    public function updateCompanyName(UpdatesTeamNames $updater): void
     {
         $this->resetErrorBag();
 
@@ -63,6 +63,6 @@ class UpdateCompanyNameForm extends Component
      */
     public function render(): View
     {
-        return view('filament-companies::companies.update-company-name-form');
+        return view('filament-companies::teams.update-team-name-form');
     }
 }

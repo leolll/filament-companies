@@ -244,7 +244,7 @@ Information about a user's companies may be accessed via the methods provided by
 
 ```php
 // Access a user's currently selected company...
-$user->currentCompany : Wallo\FilamentCompanies\Company
+$user->currentTeam : Wallo\FilamentCompanies\Company
 
 // Access all of the companies (including owned companies) that a user belongs to...
 $user->allCompanies() : Illuminate\Support\Collection
@@ -256,13 +256,13 @@ $user->ownedCompanies : Illuminate\Database\Eloquent\Collection
 $user->companies : Illuminate\Database\Eloquent\Collection
 
 // Access a user's "personal" company...
-$user->personalCompany() : Wallo\FilamentCompanies\Company
+$user->personalTeam() : Wallo\FilamentCompanies\Company
 
 // Determine if a user owns a given company...
-$user->ownsCompany($company) : bool
+$user->ownsTeam($company) : bool
 
 // Determine if a user belongs to a given company...
-$user->belongsToCompany($company) : bool
+$user->belongsTeam($company) : bool
 
 // Get the role that the user is assigned on the company...
 $user->companyRole($company) : \Wallo\FilamentCompanies\Role
@@ -282,12 +282,12 @@ Example #1: Only allowing a certain company ID to see & visit a filament page, r
 ```php
 protected static function shouldRegisterNavigation(): bool
 {
-    return Auth::user()->currentCompany->id === 3;
+    return Auth::user()->currentTeam->id === 3;
 }
 
 public function mount(): void
 {
-    abort_unless(Auth::user()->currentCompany->id === 3, 403);
+    abort_unless(Auth::user()->currentTeam->id === 3, 403);
 }
 ```
 
@@ -295,12 +295,12 @@ Example #2: Using the Current Company Name
 ```php
 protected static function shouldRegisterNavigation(): bool
 {
-    return Auth::user()->currentCompany->name === "Filament";
+    return Auth::user()->currentTeam->name === "Filament";
 }
 
 public function mount(): void
 {
-    abort_unless(Auth::user()->currentCompany->name === "Filament", 403);
+    abort_unless(Auth::user()->currentTeam->name === "Filament", 403);
 }
 ```
 > You can use collections of different companies and group them together, or you may use different ranges of values, and more.

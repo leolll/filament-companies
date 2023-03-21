@@ -2,7 +2,7 @@
 
 namespace App\Actions\FilamentCompanies;
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\User;
 use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -17,42 +17,42 @@ use Wallo\FilamentCompanies\FilamentCompanies;
 use Wallo\FilamentCompanies\Mail\CompanyInvitation;
 use Wallo\FilamentCompanies\Rules\Role;
 
-class InviteCompanyEmployee implements InvitesCompanyEmployees
+class InviteTeamMember implements InvitesCompanyEmployees
 {
     /**
      * Invite a new company employee to the given company.
      *
      * @throws AuthorizationException
      */
-    public function invite(User $user, Company $company, string $email, string $role = null): void
+    public function invite(User $user, Team $team, string $email, string $role = null): void
     {
-        Gate::forUser($user)->authorize('addCompanyEmployee', $company);
+        Gate::forUser($user)->authorize('addTeamMember', $team);
 
-        $this->validate($company, $email, $role);
+        $this->validate($team, $email, $role);
 
-        InvitingCompanyEmployee::dispatch($company, $email, $role);
+        InvitingCompanyEmployee::dispatch($team, $email, $role);
 
-        $invitation = $company->companyInvitations()->create([
+        $invitation = $team->teamInvitations()->create([
             'email' => $email,
             'role' => $role,
         ]);
 
-        Mail::to($email)->send(new CompanyInvitation($invitation));
+        Mail::to($email)->send(new TeamInvitation($invitation));
     }
 
     /**
      * Validate the invite employee operation.
      */
-    protected function validate(Company $company, string $email, ?string $role): void
+    protected function validate(Team $team, string $email, ?string $role): void
     {
         Validator::make([
             'email' => $email,
             'role' => $role,
-        ], $this->rules($company), [
+        ], $this->rules($team), [
             'email.unique' => __('filament-companies::default.errors.employee_already_invited'),
         ])->after(
             $this->ensureUserIsNotAlreadyOnCompany($company, $email)
-        )->validateWithBag('addCompanyEmployee');
+        )->validateWithBag('addTeamMember');
     }
 
     /**
@@ -60,13 +60,13 @@ class InviteCompanyEmployee implements InvitesCompanyEmployees
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    protected function rules(Company $company): array
+    protected function rules(Team $team): array
     {
         return array_filter([
             'email' => [
                 'required', 'email',
-                Rule::unique('company_invitations')->where(function (Builder $query) use ($company) {
-                    $query->where('company_id', $company->id);
+                Rule::unique('company_invitations')->where(function (Builder $query) use ($team) {
+                    $query->where('company_id', $team->id);
                 }),
             ],
             'role' => FilamentCompanies::hasRoles()
@@ -78,11 +78,11 @@ class InviteCompanyEmployee implements InvitesCompanyEmployees
     /**
      * Ensure that the employee is not already on the company.
      */
-    protected function ensureUserIsNotAlreadyOnCompany(Company $company, string $email): Closure
+    protected function ensureUserIsNotAlreadyOnCompany(Team $team, string $email): Closure
     {
-        return static function ($validator) use ($company, $email) {
+        return static function ($validator) use ($team, $email) {
             $validator->errors()->addIf(
-                $company->hasUserWithEmail($email),
+                $team->hasUserWithEmail($email),
                 'email',
                 __('filament-companies::default.errors.employee_already_belongs_to_company')
             );

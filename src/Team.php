@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
-abstract class Company extends Model
+abstract class Team extends Model
 {
     /**
      * Get the owner of the company.
@@ -35,7 +35,7 @@ abstract class Company extends Model
         return $this->belongsToMany(FilamentCompanies::userModel(), FilamentCompanies::employeeshipModel())
                         ->withPivot('role')
                         ->withTimestamps()
-                        ->as('employeeship');
+                        ->as('membership');
     }
 
     /**
@@ -43,7 +43,7 @@ abstract class Company extends Model
      */
     public function hasUser(User $user): bool
     {
-        return $this->users->contains($user) || $user->ownsCompany($this);
+        return $this->users->contains($user) || $user->ownsTeam($this);
     }
 
     /**
@@ -67,7 +67,7 @@ abstract class Company extends Model
     /**
      * Get all the pending user invitations for the company.
      */
-    public function companyInvitations(): HasMany
+    public function teamInvitations(): HasMany
     {
         return $this->hasMany(FilamentCompanies::companyInvitationModel());
     }

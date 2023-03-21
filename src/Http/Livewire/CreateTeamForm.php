@@ -3,18 +3,18 @@
 namespace Wallo\FilamentCompanies\Http\Livewire;
 
 use App\Models\User;
-use Filament\Notifications\Notification;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
+use Livewire\Component;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-use Wallo\FilamentCompanies\Contracts\CreatesCompanies;
+use Illuminate\Http\RedirectResponse;
+use Filament\Notifications\Notification;
 use Wallo\FilamentCompanies\RedirectsActions;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Wallo\FilamentCompanies\Contracts\CreatesTeams;
 
-class CreateCompanyForm extends Component
+class CreateTeamForm extends Component
 {
     use RedirectsActions;
 
@@ -26,7 +26,7 @@ class CreateCompanyForm extends Component
     /**
      * Create a new company.
      */
-    public function createCompany(CreatesCompanies $creator): Response|Redirector|RedirectResponse
+    public function createTeam(CreatesTeams $creator): Response|Redirector|RedirectResponse
     {
         $this->resetErrorBag();
 
@@ -34,7 +34,7 @@ class CreateCompanyForm extends Component
 
         $name = $this->state['name'];
 
-        $this->companyCreated($name);
+        $this->teamCreated($name);
 
         return $this->redirectPath($creator);
     }
@@ -52,7 +52,7 @@ class CreateCompanyForm extends Component
      */
     public function render(): View
     {
-        return view('filament-companies::companies.create-company-form');
+        return view('filament-companies::teams.create-team-form');
     }
 
     public function companyCreated($name): void

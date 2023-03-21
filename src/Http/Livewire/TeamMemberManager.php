@@ -3,25 +3,26 @@
 namespace Wallo\FilamentCompanies\Http\Livewire;
 
 use App\Models\User;
-use Filament\Notifications\Notification;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use Wallo\FilamentCompanies\Actions\UpdateCompanyEmployeeRole;
-use Wallo\FilamentCompanies\Contracts\AddsCompanyEmployees;
-use Wallo\FilamentCompanies\Contracts\InvitesCompanyEmployees;
-use Wallo\FilamentCompanies\Contracts\RemovesCompanyEmployees;
-use Wallo\FilamentCompanies\Features;
-use Wallo\FilamentCompanies\FilamentCompanies;
-use Wallo\FilamentCompanies\RedirectsActions;
+use Illuminate\Http\Response;
 use Wallo\FilamentCompanies\Role;
+use Illuminate\Routing\Redirector;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Wallo\FilamentCompanies\Features;
+use Filament\Notifications\Notification;
+use Wallo\FilamentCompanies\RedirectsActions;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Wallo\FilamentCompanies\FilamentCompanies;
+use Illuminate\Auth\Access\AuthorizationException;
+use Wallo\FilamentCompanies\Contracts\AddsTeamMembers;
+use Wallo\FilamentCompanies\Contracts\InvitesTeamMembers;
+use Wallo\FilamentCompanies\Contracts\RemovesTeamMembers;
+use Wallo\FilamentCompanies\Actions\UpdateCompanyEmployeeRole;
+use Wallo\FilamentCompanies\Contracts\RemovesCompanyEmployees;
 
-class CompanyEmployeeManager extends Component
+class TeamMemberManager extends Component
 {
     use RedirectsActions;
 
@@ -65,7 +66,7 @@ class CompanyEmployeeManager extends Component
      *
      * @var array<string, mixed>
      */
-    public $addCompanyEmployeeForm = [
+    public $addTeamMemberForm = [
         'email' => '',
         'role' => null,
     ];
@@ -81,31 +82,31 @@ class CompanyEmployeeManager extends Component
     /**
      * Add a new company employee to a company.
      */
-    public function addCompanyEmployee(): void
+    public function addTeamMember(): void
     {
         $this->resetErrorBag();
 
         if (Features::sendsCompanyInvitations()) {
-            app(InvitesCompanyEmployees::class)->invite(
+            app(InvitesTeamMembers::class)->invite(
                 $this->user,
                 $this->company,
-                $this->addCompanyEmployeeForm['email'],
-                $this->addCompanyEmployeeForm['role']
+                $this->addTeamMemberForm['email'],
+                $this->addTeamMemberForm['role']
             );
         } else {
-            app(AddsCompanyEmployees::class)->add(
+            app(AddsTeamMembers::class)->add(
                 $this->user,
                 $this->company,
-                $this->addCompanyEmployeeForm['email'],
-                $this->addCompanyEmployeeForm['role']
+                $this->addTeamMemberForm['email'],
+                $this->addTeamMemberForm['role']
             );
         }
 
-        $email = $this->addCompanyEmployeeForm['email'];
+        $email = $this->addTeamMemberForm['email'];
 
-        $this->employeeInvitationSent($email);
+        $this->memberInvitationSent($email);
 
-        $this->addCompanyEmployeeForm = [
+        $this->addTeamMemberForm = [
             'email' => '',
             'role' => null,
         ];
@@ -116,7 +117,7 @@ class CompanyEmployeeManager extends Component
     /**
      * Cancel a pending company employee invitation.
      */
-    public function cancelCompanyInvitation(int $invitationId): void
+    public function cancelTeamInvitation(int $invitationId): void
     {
         if (! empty($invitationId)) {
             $model = FilamentCompanies::companyInvitationModel();
@@ -142,7 +143,7 @@ class CompanyEmployeeManager extends Component
      *
      * @throws AuthorizationException
      */
-    public function updateRole(UpdateCompanyEmployeeRole $updater): void
+    public function updateRole(UpdateTeamMemberRole $updater): void
     {
         $updater->update(
             $this->user,
@@ -167,7 +168,7 @@ class CompanyEmployeeManager extends Component
     /**
      * Remove the currently authenticated user from the company.
      */
-    public function leaveCompany(RemovesCompanyEmployees $remover): Response|Redirector|RedirectResponse
+    public function leaveCompany(RemovesTeamMembers $remover): Response|Redirector|RedirectResponse
     {
         $remover->remove(
             $this->user,
@@ -239,7 +240,7 @@ class CompanyEmployeeManager extends Component
      */
     public function render(): View
     {
-        return view('filament-companies::companies.company-employee-manager');
+        return view('filament-companies::teams.team-member-manager');
     }
 
     public function employeeInvitationSent($email): void

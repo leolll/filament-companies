@@ -2,7 +2,7 @@
 
 namespace Wallo\FilamentCompanies\Tests\Fixtures;
 
-use App\Models\Company;
+use App\Models\Team;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CompanyPolicy
@@ -26,9 +26,9 @@ class CompanyPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function view(User $user, Company $company)
+    public function view(User $user, Team $team)
     {
-        return $user->belongsToCompany($company);
+        return $user->belongsTeam($company);
     }
 
     /**
@@ -48,9 +48,9 @@ class CompanyPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function update(User $user, Company $company)
+    public function update(User $user, Team $team)
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 
     /**
@@ -59,9 +59,9 @@ class CompanyPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function addCompanyEmployee(User $user, Company $company)
+    public function addTeamMember(User $user, Team $team)
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 
     /**
@@ -70,9 +70,9 @@ class CompanyPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function updateCompanyEmployee(User $user, Company $company)
+    public function updateTeamMember(User $user, Team $team)
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 
     /**
@@ -81,9 +81,9 @@ class CompanyPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function removeCompanyEmployee(User $user, Company $company)
+    public function removeCompanyEmployee(User $user, Team $team)
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 
     /**
@@ -92,8 +92,8 @@ class CompanyPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function delete(User $user, Company $company)
+    public function delete(User $user, Team $team)
     {
-        return $user->ownsCompany($company);
+        return $user->ownsTeam($company);
     }
 }

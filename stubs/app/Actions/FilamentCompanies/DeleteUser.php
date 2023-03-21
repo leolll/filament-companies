@@ -2,8 +2,9 @@
 
 namespace App\Actions\FilamentCompanies;
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Wallo\FilamentCompanies\Contracts\DeletesCompanies;
 use Wallo\FilamentCompanies\Contracts\DeletesUsers;
@@ -44,7 +45,7 @@ class DeleteUser implements DeletesUsers
     {
         $user->companies()->detach();
 
-        $user->ownedCompanies->each(function (Company $company) {
+        $user->ownedCompanies->each(function (Model $company) {
             $this->deletesCompanies->delete($company);
         });
     }

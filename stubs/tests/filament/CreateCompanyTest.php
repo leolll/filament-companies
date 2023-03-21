@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
-use Wallo\FilamentCompanies\Http\Livewire\CreateCompanyForm;
+use Wallo\FilamentCompanies\Http\Livewire\CreateTeamForm;
 
 class CreateCompanyTest extends TestCase
 {
@@ -16,7 +16,7 @@ class CreateCompanyTest extends TestCase
     {
         $this->actingAs($user = User::factory()->withPersonalCompany()->create());
 
-        Livewire::test(CreateCompanyForm::class)
+        Livewire::test(CreateTeamForm::class)
                     ->set(['state' => ['name' => 'Test Company']])
                     ->call('createCompany');
 

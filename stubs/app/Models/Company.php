@@ -18,7 +18,7 @@ class Company extends FilamentCompaniesCompany
      * @var array<string, string>
      */
     protected $casts = [
-        'personal_company' => 'boolean',
+        'personal_team' => 'boolean',
     ];
 
     /**
@@ -28,7 +28,7 @@ class Company extends FilamentCompaniesCompany
      */
     protected $fillable = [
         'name',
-        'personal_company',
+        'personal_team',
     ];
 
     /**

@@ -4,7 +4,7 @@ namespace Wallo\FilamentCompanies\Tests;
 
 use App\Actions\FilamentCompanies\CreateCompany;
 use App\Actions\FilamentCompanies\RemoveCompanyEmployee;
-use App\Models\Company;
+use App\Models\Team;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;

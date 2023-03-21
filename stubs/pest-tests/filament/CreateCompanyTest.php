@@ -2,12 +2,12 @@
 
 use App\Models\User;
 use Livewire\Livewire;
-use Wallo\FilamentCompanies\Http\Livewire\CreateCompanyForm;
+use Wallo\FilamentCompanies\Http\Livewire\CreateTeamForm;
 
 test('companies can be created', function () {
     $this->actingAs($user = User::factory()->withPersonalCompany()->create());
 
-    Livewire::test(CreateCompanyForm::class)
+    Livewire::test(CreateTeamForm::class)
                 ->set(['state' => ['name' => 'Test Company']])
                 ->call('createCompany');
 

@@ -2,16 +2,16 @@
 
 namespace App\Actions\FilamentCompanies;
 
-use App\Models\Company;
+use App\Models\Team;
 use Wallo\FilamentCompanies\Contracts\DeletesCompanies;
 
-class DeleteCompany implements DeletesCompanies
+class DeleteTeam implements DeletesCompanies
 {
     /**
      * Delete the given company.
      */
-    public function delete(Company $company): void
+    public function delete(Team $team): void
     {
-        $company->purge();
+        $team->purge();
     }
 }

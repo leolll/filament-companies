@@ -5,7 +5,7 @@ namespace Wallo\FilamentCompanies\Tests;
 use App\Actions\FilamentCompanies\CreateCompany;
 use App\Actions\FilamentCompanies\DeleteCompany;
 use App\Actions\FilamentCompanies\DeleteUser;
-use App\Models\Company;
+use App\Models\Team;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;

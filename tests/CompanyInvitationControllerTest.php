@@ -3,7 +3,7 @@
 namespace Wallo\FilamentCompanies\Tests;
 
 use App\Actions\FilamentCompanies\CreateCompany;
-use App\Models\Company;
+use App\Models\Team;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Wallo\FilamentCompanies\Contracts\AddsCompanyEmployees;

@@ -6,7 +6,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
-class ValidateCompanyDeletion
+class ValidateTeamDeletion
 {
     /**
      * Validate that the company can be deleted by the given user.
@@ -17,7 +17,7 @@ class ValidateCompanyDeletion
     {
         Gate::forUser($user)->authorize('delete', $company);
 
-        if ($company->personal_company) {
+        if ($company->personal_team) {
             throw ValidationException::withMessages([
                 'company' => __('filament-companies::default.errors.company_deletion'),
             ])->errorBag('deleteCompany');

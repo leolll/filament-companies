@@ -4,13 +4,7 @@ namespace Wallo\FilamentCompanies;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Wallo\FilamentCompanies\Contracts\AddsCompanyEmployees;
-use Wallo\FilamentCompanies\Contracts\CreatesCompanies;
-use Wallo\FilamentCompanies\Contracts\DeletesCompanies;
 use Wallo\FilamentCompanies\Contracts\DeletesUsers;
-use Wallo\FilamentCompanies\Contracts\InvitesCompanyEmployees;
-use Wallo\FilamentCompanies\Contracts\RemovesCompanyEmployees;
-use Wallo\FilamentCompanies\Contracts\UpdatesCompanyNames;
 
 class FilamentCompanies
 {
@@ -42,17 +36,17 @@ class FilamentCompanies
     /**
      * The company model that should be used by Company.
      */
-    public static string $companyModel = 'App\\Models\\Company';
+    public static string $companyModel = 'App\\Models\\Team';
 
     /**
      * The employeeship model that should be used by Company.
      */
-    public static string $employeeshipModel = 'App\\Models\\Employeeship';
+    public static string $employeeshipModel = 'App\\Models\\Membership';
 
     /**
      * The company invitation model that should be used by Company.
      */
-    public static string $companyInvitationModel = 'App\\Models\\CompanyInvitation';
+    public static string $companyInvitationModel = 'App\\Models\\TeamInvitation';
 
     /**
      * Determine if Company has registered roles.
@@ -141,9 +135,9 @@ class FilamentCompanies
     /**
      * Determine if Company is supporting company features.
      */
-    public static function hasCompanyFeatures(): bool
+    public static function hasTeamFeatures(): bool
     {
-        return Features::hasCompanyFeatures();
+        return Features::hasTeamFeatures();
     }
 
     /**
@@ -152,8 +146,8 @@ class FilamentCompanies
     public static function userHasCompanyFeatures(Model $user): bool
     {
         return (array_key_exists(HasCompanies::class, class_uses_recursive($user)) ||
-                method_exists($user, 'currentCompany')) &&
-                static::hasCompanyFeatures();
+                method_exists($user, 'currentTeam')) &&
+                static::hasTeamFeatures();
     }
 
     /**
@@ -273,7 +267,7 @@ class FilamentCompanies
     /**
      * Specify the company invitation model that should be used by Company.
      */
-    public static function useCompanyInvitationModel(string $model): static
+    public static function useTeamInvitationModel(string $model): static
     {
         static::$companyInvitationModel = $model;
 
@@ -283,15 +277,15 @@ class FilamentCompanies
     /**
      * Register a class / callback that should be used to create companies.
      */
-    public static function createCompaniesUsing(string $class): void
+    public static function createTeamsUsing(string $class): void
     {
-        app()->singleton(CreatesCompanies::class, $class);
+        app()->singleton(CreatesTeams::class, $class);
     }
 
     /**
      * Register a class / callback that should be used to update company names.
      */
-    public static function updateCompanyNamesUsing(string $class): void
+    public static function updateTeamNamesUsing(string $class): void
     {
         app()->singleton(UpdatesCompanyNames::class, $class);
     }
@@ -299,33 +293,33 @@ class FilamentCompanies
     /**
      * Register a class / callback that should be used to add company employees.
      */
-    public static function addCompanyEmployeesUsing(string $class): void
+    public static function addTeamMembersUsing(string $class): void
     {
-        app()->singleton(AddsCompanyEmployees::class, $class);
+        app()->singleton(AddsTeamMembers::class, $class);
     }
 
     /**
      * Register a class / callback that should be used to add company employees.
      */
-    public static function inviteCompanyEmployeesUsing(string $class): void
+    public static function inviteTeamMembersUsing(string $class): void
     {
-        app()->singleton(InvitesCompanyEmployees::class, $class);
+        app()->singleton(InvitesTeamMembers::class, $class);
     }
 
     /**
      * Register a class / callback that should be used to remove company employees.
      */
-    public static function removeCompanyEmployeesUsing(string $class): void
+    public static function removeTeamMembersUsing(string $class): void
     {
-        app()->singleton(RemovesCompanyEmployees::class, $class);
+        app()->singleton(RemovesTeamMembers::class, $class);
     }
 
     /**
      * Register a class / callback that should be used to delete companies.
      */
-    public static function deleteCompaniesUsing(string $class): void
+    public static function deleteTeamsUsing(string $class): void
     {
-        app()->singleton(DeletesCompanies::class, $class);
+        app()->singleton(DeletesTeams::class, $class);
     }
 
     /**

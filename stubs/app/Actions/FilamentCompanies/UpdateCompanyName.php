@@ -2,7 +2,7 @@
 
 namespace App\Actions\FilamentCompanies;
 
-use App\Models\Company;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
@@ -18,7 +18,7 @@ class UpdateCompanyName implements UpdatesCompanyNames
      *
      * @throws AuthorizationException
      */
-    public function update(User $user, Company $company, array $input): void
+    public function update(User $user, Team $team, array $input): void
     {
         Gate::forUser($user)->authorize('update', $company);
 
